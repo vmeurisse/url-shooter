@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<link href="sidebar.css" type="text/css" rel="stylesheet"/>
+		<script src="sidebar.js"></script>
+	</head>
+	<body>
+		<form>
+			<div class="top">
+				<label>url:</label>
+				<input id="urlInput"/>
+				<label class="referrerLabel">referrer:</label>
+				<input id="referrerInput"/>
+			</div>
+			<div class="params">
+				Get:
+				<div id="getInputs"></div>
+			</div>
+			<div class="params">
+				Post:
+				<div id="postInputs"></div>
+			</div>
+			<div class="buttonBar">
+				<button onclick="up.open(false)">Open</button><button onclick="up.open(true)">Open (new tab)</button>
+			</div>
+		</form>
+	</body>
+</html>

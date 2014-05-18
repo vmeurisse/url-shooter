@@ -1,0 +1,44 @@
+html{
+	margin: 7px;
+	padding: 0;
+}
+body {
+	margin: 0;
+	padding: 0;
+}
+
+input {
+	border: solid 1px black;
+	padding: 2px 1px;
+}
+
+.top label {
+	display: block;
+}
+
+.top input {
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.params input {
+	box-sizing: border-box;
+	width: calc(50% - 5px);
+	margin-top: 5px;
+}
+
+.buttonBar,
+.params,
+.referrerLabel {
+	margin-top: 10px;
+}
+.buttonBar button {
+	padding: 0;
+	box-sizing: border-box;
+	width: calc(50% - 5px);
+}
+
+.params input:nth-child(2),
+.buttonBar button:nth-child(2) {
+	float: right;
+}
