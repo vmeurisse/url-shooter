@@ -1,6 +1,7 @@
 html{
 	margin: 7px;
 	padding: 0;
+	background-color: #DCDAD5;
 }
 body {
 	margin: 0;
@@ -8,7 +9,8 @@ body {
 }
 
 input {
-	border: solid 1px black;
+	background-color: #DCDAD5;
+	border: 1px solid #EFEDE8;
 	padding: 2px 1px;
 }
 
