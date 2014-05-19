@@ -1,10 +1,11 @@
 {
   "name": "url-shooter",
   "title": "URL Shooter",
+  "homepage": "https://github.com/vmeurisse/url-shooter",
   "id": "jid1-I1fYIX03plt8FA",
   "icon": "data/icon-48.png",
   "icon64": "data/icon-64.png",
-  "description": "",
+  "description": "View and edit GET and POST parameters of the current page",
   "author": "Vincent Meurisse",
   "license": "MPL 2.0",
   "version": "0.1.0"
