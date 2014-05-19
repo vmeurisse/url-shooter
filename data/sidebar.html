@@ -4,8 +4,12 @@
 		<link href="sidebar.css" type="text/css" rel="stylesheet"/>
 		<script src="sidebar.js"></script>
 	</head>
-	<body>
-		<form>
+	<body contextmenu="contextMenu">
+		<menu type="context" id="contextMenu">
+			<menuitem label="Refresh (reset manual changes)" onclick="up.refresh()" icon="icon-refresh-16.png"/>
+		</menu>
+
+		<form onsubmit="return false">
 			<div class="top">
 				<label>url:</label>
 				<input id="urlInput"/>

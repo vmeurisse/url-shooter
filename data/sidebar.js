@@ -6,8 +6,12 @@ function supplant(s, o) {
 };
 
 var up = {};
+up.tabs = {};
+up.tabId = null; //Id of the current tab
+
 up.init = function() {
-	addon.port.on("url", up.onUrl.bind(up));
+	addon.port.on('url', up.onUrl.bind(up));
+	addon.port.on('close', up.onClose.bind(up));
 	addon.port.emit("ping");
 };
 
@@ -16,10 +20,66 @@ up.tpl = '<div>' +
 	'<input value="{value}"/>' +
 '</div>';
 
-up.onUrl = function(url) {
+up.compareUrls = function(u1, u2) {
+	for (var key in u1) {
+		if (u1[key] !== u2[key]) return false;
+	}
+	return true;
+};
+
+up.normaliseUrl = function(url) {
 	url = url || {};
-	document.getElementById('urlInput').value = (url.base || '') + (url.hash ? '#' + url.hash : '');
-	document.getElementById('referrerInput').value = (url.referrer || '');
+	url.base = (url.base || '') + (url.hash ? '#' + url.hash : '');
+	delete url.hash;
+	
+	url.query = url.query || '';
+	url.postData = url.postData || '';
+	url.referrer = url.referrer || '';
+	
+	return url;
+};
+
+up.onClose = function(tabId) {
+	console.log('Tab closed. Was active: ' + (up.tabId === tabId));
+	if (up.tabId === tabId) delete up.tabId;
+	delete up.tabs[tabId];
+};
+
+up.onUrl = function(url, tabId) {
+	url = up.normaliseUrl(url);
+	
+	console.log('receiving url for tab <' + tabId + '>: ' + url.base);
+	if (tabId === up.tabId) {
+		if (up.compareUrls(up.tabs[tabId].url, url)) {
+			console.log('Url unchanged. no action');
+			return;
+		}
+		up.tabs[tabId].url = url;
+		console.log('Current tab Url changed. Refreshing UI.');
+	} else {
+		if (up.tabId) {
+			console.log('Tab changed. Saving state.');
+			up.tabs[up.tabId].state = up.readUrl();
+		}
+		up.tabId = tabId;
+		var tabData = up.tabs[tabId] || {};
+		up.tabs[tabId] = tabData;
+		if (tabData.url && up.compareUrls(tabData.url, url)) {
+			console.log('Previous tab with url unchanged. Displaying previous state');
+			url = tabData.state;
+		} else {
+			console.log('New tab or changed url');
+			tabData.url = url;
+		}
+		
+	}
+	
+	up.prefill(url);
+};
+
+up.prefill = function(url) {
+	document.getElementById('urlInput').value = url.base;
+	document.getElementById('referrerInput').value = url.referrer;
 	
 	this.displayParams('getInputs', url.query);
 	this.displayParams('postInputs', url.postData);
@@ -117,15 +177,25 @@ up.readParams = function(id) {
 	return query.join('&');
 };
 
-up.open = function(newTab) {
+up.readUrl = function() {
 	var url = document.getElementById('urlInput').value;
 	var referrer = document.getElementById('referrerInput').value;
-	addon.port.emit('load', {
+	return {
 		base: url,
 		query: this.readParams('getInputs'),
 		postData: this.readParams('postInputs'),
-		newTab: newTab,
 		referrer: referrer
-	});
+	};
 };
+
+up.open = function(newTab) {
+	var url = up.readUrl();
+	url.newTab = newTab;
+	addon.port.emit('load', url);
+};
+
+up.refresh = function() {
+	up.prefill(up.tabs[up.tabId].url);
+};
+
 up.init();
