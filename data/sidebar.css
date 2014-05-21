@@ -45,7 +45,7 @@ input {
 }
 
 .params input {
-	width: calc(50% - 5px);
+	width: calc(50% - 2px);
 }
 
 .params .handle {
