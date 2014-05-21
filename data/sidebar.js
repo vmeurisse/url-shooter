@@ -25,7 +25,7 @@ up.tpl = '<div data-dragitem="true" class="inputLine">' +
 	'<div draggable="true" class="handle"></div>' +
 	'<input value="{key}"/>' +
 	'<input value="{value}"/>' +
-	'<div class="delete" onclick="up.deleteLine(event)"></div>' +
+	'<div class="delete" onclick="up.deleteLine(event)" title="Delete line"></div>' +
 '</div>';
 
 up.compareUrls = function(u1, u2) {
