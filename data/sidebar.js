@@ -266,22 +266,27 @@ up.drag.onDragStart = function(e) {
 	dt.setDragImage(up.drag.dragging.item, 0, 0);
 };
 
+up.drag.getPlaceHolder = function() {
+	if (!up.drag.placeholder) {
+		up.drag.placeholder = document.createElement('div');
+		up.drag.placeholder.className = 'drag-placeholder';
+	}
+	return up.drag.placeholder;
+};
+
 up.drag.onDrag = function(e) {
 	e.preventDefault();
 	e.dataTransfer.dropEffect = 'move';
 
 	if (e.target.getAttribute('data-dragitem') || e.target.parentElement.getAttribute('data-dragitem')) {
-		if (!up.drag.placeholder) {
-			up.drag.placeholder = document.createElement('div');
-			up.drag.placeholder.className = 'drag-placeholder';
-		}
 		var target = e.target.getAttribute('data-dragitem') ? e.target : e.target.parentElement;
 		var parent = target.parentElement;
+		var placeholder = up.drag.getPlaceHolder();
 		
-		if (!(up.drag.placeholder.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_PRECEDING)) {
+		if (!(placeholder.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_PRECEDING)) {
 			target = target.nextSibling;
 		}
-		parent.insertBefore(up.drag.placeholder, target);
+		parent.insertBefore(placeholder, target);
 		
 		if (!up.drag.dragging.removed) {
 			// Cannot remove element due to https://bugzilla.mozilla.org/show_bug.cgi?id=460801
@@ -290,8 +295,9 @@ up.drag.onDrag = function(e) {
 		}
 	} else if (e.target !== up.drag.placeholder) {
 		// The target is the list itself, check if we need to move the placeholder to the other list
-		if (up.drag.placeholder.parentElement !== e.target) {
-			e.target.appendChild(up.drag.placeholder);
+		var placeholder = up.drag.getPlaceHolder();
+		if (placeholder.parentElement !== e.target) {
+			e.target.appendChild(placeholder);
 		}
 	}
 };
