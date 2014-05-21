@@ -1,20 +1,16 @@
-html {
+html,
+body {
 	margin: 0;
-	padding: 7px;
-	padding-left: 10px;
+	padding: 0;
 	height:100%;
-	box-sizing: border-box;
-	
+}
+
+html {
 	background-color: -moz-Dialog;
 	color: -moz-DialogText;
 	
 	font-family: 'DejaVu Sans', Verdana, Geneva, sans-serif;
 	font-size: 12px;
-}
-body {
-	margin: 0;
-	padding: 0;
-	height: 100%;
 }
 
 input {
@@ -26,6 +22,9 @@ input {
 	box-sizing: border-box;
 }
 
+.top {
+	padding: 7px 7px 0 10px;
+}
 .top label {
 	display: block;
 }
@@ -35,9 +34,14 @@ input {
 	width: 100%;
 }
 
+.params label {
+	margin-left: 10px;
+}
+
 #getInputs,
 #postInputs {
-	min-height: 25px;
+	min-height: 20px;
+	margin-top: 5px;
 }
 
 .params input {
@@ -62,7 +66,7 @@ input {
 
 .params .inputLine,
 .params .drag-placeholder {
-	margin-top: 5px;
+	margin: 5px 7px 0 10px;
 }
 
 .params .inputLine {
@@ -93,12 +97,14 @@ input {
 	display: none;
 }
 
-.buttonBar,
 .params,
 .referrerLabel {
 	margin-top: 10px;
 }
 
+.buttonBar {
+	margin: 10px 7px 7px 10px;
+}
 .buttonBar button {
 	box-sizing: border-box;
 	width: 100%;

@@ -285,7 +285,7 @@ up.drag.onDragStart = function(e) {
 		item: e.target.parentElement
 	};
 	
-	dt.setDragImage(up.drag.dragging.item, 0, 0);
+	dt.setDragImage(up.drag.dragging.item, 3, 7);
 };
 
 up.drag.getPlaceHolder = function() {
