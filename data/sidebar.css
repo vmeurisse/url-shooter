@@ -6,6 +6,9 @@ html {
 	
 	background-color: -moz-Dialog;
 	color: -moz-DialogText;
+	
+	font-family: 'DejaVu Sans', Verdana, Geneva, sans-serif;
+	font-size: 12px;
 }
 body {
 	margin: 0;
@@ -17,6 +20,9 @@ input {
 	background-color: -moz-Dialog;
 	border: 1px solid -moz-DialogText;
 	padding: 2px 1px;
+	
+	height: 21px;
+	box-sizing: border-box;
 }
 
 .top label {
@@ -24,7 +30,7 @@ input {
 }
 
 .top input {
-	box-sizing: border-box;
+	margin-top: 5px;
 	width: 100%;
 }
 
@@ -34,9 +40,7 @@ input {
 }
 
 .params input {
-	box-sizing: border-box;
 	width: calc(50% - 5px);
-	margin-top: 5px;
 }
 
 .params .handle {
@@ -51,8 +55,14 @@ input {
 }
 
 .params .drag-placeholder {
-	border: 1px dashed black;
-	height: 24px;
+	border: 1px dashed -moz-DialogText;
+	height: 19px;
+	margin-left: 6px;
+}
+
+.params .inputLine,
+.params .drag-placeholder {
+	margin-top: 5px;
 }
 
 .buttonBar,
@@ -60,6 +70,7 @@ input {
 .referrerLabel {
 	margin-top: 10px;
 }
+
 .buttonBar button {
 	padding: 0;
 	box-sizing: border-box;

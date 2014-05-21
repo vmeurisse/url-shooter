@@ -21,7 +21,7 @@ up.init = function() {
 	});
 };
 
-up.tpl = '<div data-dragitem="true">' +
+up.tpl = '<div data-dragitem="true" class="inputLine">' +
 	'<div draggable="true" class="handle"></div>' +
 	'<input value="{key}"/>' +
 	'<input value="{value}"/>' +
