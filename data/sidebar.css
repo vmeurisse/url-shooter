@@ -1,6 +1,7 @@
 html {
 	margin: 0;
 	padding: 7px;
+	padding-left: 10px;
 	height:100%;
 	box-sizing: border-box;
 	
@@ -21,7 +22,7 @@ input {
 	border: 1px solid -moz-DialogText;
 	padding: 2px 1px;
 	
-	height: 21px;
+	height: 20px;
 	box-sizing: border-box;
 }
 
@@ -36,7 +37,7 @@ input {
 
 #getInputs,
 #postInputs {
-	min-height: 26px;
+	min-height: 25px;
 }
 
 .params input {
@@ -49,26 +50,28 @@ input {
 	height: 14px;
 	cursor: move;
 	background-image: url(drag-handle.svg);
-	position: relative;
+	position: absolute;
 	top: 3px;
-	left: -3px;
+	left: -8px;
 }
 
 .params .drag-placeholder {
 	border: 1px dashed -moz-DialogText;
-	height: 19px;
-	margin-left: 6px;
+	height: 18px;
 }
 
 .params .inputLine,
 .params .drag-placeholder {
 	margin-top: 5px;
+}
+
+.params .inputLine {
 	position: relative;
 }
 
 .params .inputLine .delete {
 	position: absolute;
-	top: 3px;
+	top: 2px;
 	right: -7px;
 	
 	background-image: url(icon-delete-16.png);
