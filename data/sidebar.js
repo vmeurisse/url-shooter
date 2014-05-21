@@ -10,12 +10,19 @@ up.tabs = {};
 up.tabId = null; //Id of the current tab
 
 up.init = function() {
-	addon.port.on('url', up.onUrl.bind(up));
-	addon.port.on('close', up.onClose.bind(up));
-	addon.port.emit("ping");
+	if (window.addon) {
+		addon.port.on('url', up.onUrl.bind(up));
+		addon.port.on('close', up.onClose.bind(up));
+		addon.port.emit("ping");
+	}
+	document.addEventListener('DOMContentLoaded', function(){
+		if (!window.addon) up.onUrl();
+		up.drag.init();
+	});
 };
 
-up.tpl = '<div>' +
+up.tpl = '<div data-dragitem="true">' +
+	'<div draggable="true" class="handle"></div>' +
 	'<input value="{key}"/>' +
 	'<input value="{value}"/>' +
 '</div>';
@@ -107,9 +114,16 @@ up.getPreviousInputLine = function(type) {
 	return this.previousInputLine[type];
 };
 
-up.onInput = function(type) {
+/**
+ * Add/remove last line if needed
+ */
+up.checkLastLine = function(type, noCache) {
+	if (noCache) {
+		delete this.previousInputLine[type];
+		delete this.lastInputLine[type];
+	}
 	var inputs = up.getLastInputLine(type);
-	if (inputs[0].value || inputs[1].value) {
+	if (!inputs[0] || inputs[0].value || inputs[1].value) {
 		up.insertLastLine(type);
 	} else {
 		while (1) {
@@ -196,6 +210,83 @@ up.open = function(newTab) {
 
 up.refresh = function() {
 	up.prefill(up.tabs[up.tabId].url);
+};
+
+up.drag = {};
+up.drag.init = function() {
+	this.attachEvents('getInputs');
+	this.attachEvents('postInputs');
+};
+up.drag.attachEvents = function(id) {
+	var dom = document.getElementById(id);
+	dom.addEventListener('dragstart', this.onDragStart.bind(this), false);
+	dom.addEventListener('dragover', this.onDrag.bind(this), false);
+	dom.addEventListener('dragenter', this.onDrag.bind(this), false);
+	dom.addEventListener('drop', this.onDragDrop.bind(this), false);
+	dom.addEventListener('dragend', this.onDragEnd.bind(this), false);
+};
+
+up.drag.onDragStart = function(e) {
+	var dt = e.dataTransfer;
+	dt.effectAllowed = 'move';
+	dt.setData('url-shooter-param', ' ');
+	
+	up.drag.dragging = {
+		item: e.target.parentElement
+	};
+	
+	dt.setDragImage(up.drag.dragging.item, 0, 0);
+};
+
+up.drag.onDrag = function(e) {
+	e.preventDefault();
+	e.dataTransfer.dropEffect = 'move';
+
+	if (e.target.getAttribute('data-dragitem') || e.target.parentElement.getAttribute('data-dragitem')) {
+		if (!up.drag.placeholder) {
+			up.drag.placeholder = document.createElement('div');
+			up.drag.placeholder.className = 'drag-placeholder';
+		}
+		var target = e.target.getAttribute('data-dragitem') ? e.target : e.target.parentElement;
+		var parent = target.parentElement;
+		
+		if (!(up.drag.placeholder.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_PRECEDING)) {
+			target = target.nextSibling;
+		}
+		parent.insertBefore(up.drag.placeholder, target);
+		
+		if (!up.drag.dragging.removed) {
+			// Cannot remove element due to https://bugzilla.mozilla.org/show_bug.cgi?id=460801
+			up.drag.dragging.item.style.display = 'none';
+			up.drag.dragging.removed = true;
+		}
+	} else if (e.target !== up.drag.placeholder) {
+		// The target is the list itself, check if we need to move the placeholder to the other list
+		if (up.drag.placeholder.parentElement !== e.target) {
+			e.target.appendChild(up.drag.placeholder);
+		}
+	}
+};
+
+up.drag.onDragDrop = function(e) {
+	e.stopPropagation();
+	
+	var list = up.drag.placeholder.parentElement;
+	list.insertBefore(up.drag.dragging.item, up.drag.placeholder);
+	list.removeChild(up.drag.placeholder);
+	
+	up.checkLastLine('getInputs', true);
+	up.checkLastLine('postInputs', true);
+};
+
+up.drag.onDragEnd = function(e) {
+	up.drag.dragging.item.style.display = '';
+	delete up.drag.dragging;
+	
+	if (up.drag.placeholder) {
+		var parent = up.drag.placeholder.parentElement;
+		if (parent) parent.removeChild(up.drag.placeholder);
+	}
 };
 
 up.init();
