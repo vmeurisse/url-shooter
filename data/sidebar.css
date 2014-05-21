@@ -100,9 +100,8 @@ input {
 }
 
 .buttonBar button {
-	padding: 0;
 	box-sizing: border-box;
-	width: calc(50% - 5px);
+	width: 100%;
 }
 
 .params input:nth-child(3),

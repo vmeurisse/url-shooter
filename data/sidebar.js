@@ -207,9 +207,15 @@ up.readUrl = function() {
 	};
 };
 
-up.open = function(newTab) {
+up.keypress = function(e) {
+	if (e.ctrlKey && e.keyCode === 13) {
+		up.submit(e);
+	}
+}
+up.submit = function(e) {
+	e.preventDefault();
 	var url = up.readUrl();
-	url.newTab = newTab;
+	url.newTab = !!(e.ctrlKey || e.metaKey);
 	addon.port.emit('load', url);
 };
 

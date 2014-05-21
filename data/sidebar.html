@@ -14,7 +14,7 @@
 			</menu>
 		</menu>
 		
-		<form onsubmit="return false">
+		<form onsubmit="up.submit(event)" onkeydown="up.keypress(event)">
 			<div class="top">
 				<label>Url:</label>
 				<input id="urlInput"/>
@@ -32,7 +32,7 @@
 				<div id="postInputs" oninput="up.checkLastLine('postInputs')"></div>
 			</div>
 			<div class="buttonBar">
-				<button onclick="up.open(false)">Open</button><button onclick="up.open(true)">Open (new tab)</button>
+				<button onclick="up.submit(event)" title="Use control key to submit in a new tab">Submit</button>
 			</div>
 		</form>
 	</body>
