@@ -1,12 +1,16 @@
-html{
-	margin: 7px;
-	padding: 0;
+html {
+	margin: 0;
+	padding: 7px;
+	height:100%;
+	box-sizing: border-box;
+	
 	background-color: -moz-Dialog;
 	color: -moz-DialogText;
 }
 body {
 	margin: 0;
 	padding: 0;
+	height: 100%;
 }
 
 input {
