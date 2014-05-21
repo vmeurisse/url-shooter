@@ -212,6 +212,34 @@ up.refresh = function() {
 	up.prefill(up.tabs[up.tabId].url);
 };
 
+up.switchInputs = function(postToGet, getToPost) {
+	var getList = document.getElementById('getInputs');
+	var postList = document.getElementById('postInputs');
+	var postInputs;
+	var getInputs;
+	if (postToGet) {
+		postInputs = document.createDocumentFragment();
+		[].slice.apply(postList.children).forEach(function(child) {
+			postInputs.appendChild(child);
+		});
+	}
+	if (getToPost) {
+		getInputs = document.createDocumentFragment();
+		[].slice.apply(getList.children).forEach(function(child) {
+			getInputs.appendChild(child);
+		});
+	}
+	if (postToGet) {
+		getList.insertBefore(postInputs, getList.lastElementChild);
+	}
+	if (getToPost) {
+		postList.insertBefore(getInputs, postList.lastElementChild);
+	}
+	
+	up.checkLastLine('getInputs', true);
+	up.checkLastLine('postInputs', true);
+};
+
 up.drag = {};
 up.drag.init = function() {
 	this.attachEvents('getInputs');

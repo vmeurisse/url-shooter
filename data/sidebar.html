@@ -6,9 +6,14 @@
 	</head>
 	<body contextmenu="contextMenu">
 		<menu type="context" id="contextMenu">
-			<menuitem label="Refresh (reset manual changes)" onclick="up.refresh()" icon="icon-refresh-16.png"/>
+			<menuitem label="Refresh (reset manual changes)" onclick="up.refresh()" icon="icon-refresh-16.png"></menuitem>
+			<menu>
+				<menuitem label="Post => Get" onclick="up.switchInputs(true, false)" icon="icon-up-16.png"></menuitem>
+				<menuitem label="Get => Post" onclick="up.switchInputs(false, true)" icon="icon-down-16.png"></menuitem>
+				<menuitem label="Get <=> Post" onclick="up.switchInputs(true, true)" icon="icon-up-down-16.png"></menuitem>
+			</menu>
 		</menu>
-
+		
 		<form onsubmit="return false">
 			<div class="top">
 				<label>Url:</label>
