@@ -63,6 +63,31 @@ input {
 .params .inputLine,
 .params .drag-placeholder {
 	margin-top: 5px;
+	position: relative;
+}
+
+.params .inputLine .delete {
+	position: absolute;
+	top: 3px;
+	right: -7px;
+	
+	background-image: url(icon-delete-16.png);
+	
+	height: 16px;
+	width: 16px;
+	
+	opacity: 0;
+	transition: opacity 1s;
+}
+
+.params .inputLine:not(:last-child):hover .delete {
+	opacity: 1;
+	cursor: pointer;
+}
+
+
+.params .inputLine:last-child .delete {
+	display: none;
 }
 
 .buttonBar,

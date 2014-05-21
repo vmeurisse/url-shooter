@@ -21,6 +21,7 @@ License details:
 Visit http://www.everaldo.com/crystal/?action=license for details.
 
 ########################################################################################################################
+- data/icon-delete-16.png
 - data/icon-refresh-16.png
 - data/icon-up-16.png
 - data/icon-down-16.png
@@ -28,6 +29,8 @@ Visit http://www.everaldo.com/crystal/?action=license for details.
 
 Icons from the oxygen Icon theme
 You can get source from the kde repository
+http://websvn.kde.org/trunk/kdesupport/oxygen-icons/16x16/actions/edit-delete.png?view=log&pathrev=1199828
+http://websvn.kde.org/trunk/kdesupport/oxygen-icons/scalable/actions/edit-delete.svgz?view=log&pathrev=1199831
 http://websvn.kde.org/trunk/kdesupport/oxygen-icons/16x16/status/task-recurring.png?view=log&pathrev=1199828
 http://websvn.kde.org/trunk/kdesupport/oxygen-icons/scalable/actions/arrow-up.svgz?view=log&pathrev=1199831
 http://websvn.kde.org/trunk/kdesupport/oxygen-icons/16x16/actions/arrow-up.png?view=log&pathrev=1199828

@@ -25,6 +25,7 @@ up.tpl = '<div data-dragitem="true" class="inputLine">' +
 	'<div draggable="true" class="handle"></div>' +
 	'<input value="{key}"/>' +
 	'<input value="{value}"/>' +
+	'<div class="delete" onclick="up.deleteLine(event)"></div>' +
 '</div>';
 
 up.compareUrls = function(u1, u2) {
@@ -94,10 +95,14 @@ up.prefill = function(url) {
 
 up.lastInputLine = {};
 up.getLastInputLine = function(type) {
-	if (this.lastInputLine[type]) return this.lastInputLine[type];
+	if (this.lastInputLine[type] !== undefined) return this.lastInputLine[type];
 	
 	var inputs = document.getElementById(type).getElementsByTagName('input');
-	this.lastInputLine[type] = [inputs[inputs.length - 2], inputs[inputs.length - 1]];
+	if (inputs.length >= 2) {
+		this.lastInputLine[type] = [inputs[inputs.length - 2], inputs[inputs.length - 1]];
+	} else {
+		this.lastInputLine[type] = null;
+	}
 	return this.lastInputLine[type];
 };
 
@@ -123,7 +128,7 @@ up.checkLastLine = function(type, noCache) {
 		delete this.lastInputLine[type];
 	}
 	var inputs = up.getLastInputLine(type);
-	if (!inputs[0] || inputs[0].value || inputs[1].value) {
+	if (!inputs || inputs[0].value || inputs[1].value) {
 		up.insertLastLine(type);
 	} else {
 		while (1) {
@@ -238,6 +243,17 @@ up.switchInputs = function(postToGet, getToPost) {
 	
 	up.checkLastLine('getInputs', true);
 	up.checkLastLine('postInputs', true);
+};
+
+up.deleteLine = function(e) {
+	// Avoid accidental clicks. The button should be visible for a minimum time
+	if (window.getComputedStyle(e.target).opacity > 0.5) {
+		var line = e.target.parentElement;
+		var list = line.parentElement;
+		
+		line.parentElement.removeChild(line);
+		up.checkLastLine(list.id, true);
+	}
 };
 
 up.drag = {};
