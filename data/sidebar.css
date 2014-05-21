@@ -44,8 +44,13 @@ input {
 	margin-top: 5px;
 }
 
-.params input {
-	width: calc(50% - 2px);
+.params input:nth-child(2) {
+	width: calc(40% - 2px);
+}
+
+.params input:nth-child(3) {
+	width: 60%;
+	float: right;
 }
 
 .params .handle {
@@ -108,11 +113,6 @@ input {
 .buttonBar button {
 	box-sizing: border-box;
 	width: 100%;
-}
-
-.params input:nth-child(3),
-.buttonBar button:nth-child(2) {
-	float: right;
 }
 
 label,
