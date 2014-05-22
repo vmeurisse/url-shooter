@@ -183,7 +183,7 @@ up.deleteLastLine = function(type, dom) {
 
 up.displayParams = function(id, string) {
 	var dom = document.getElementById(id);
-	dom.innerHTML = '';
+	var html = '';
 	if (string) {
 		string = string.split('&');
 		for (var param of string) {
@@ -192,9 +192,10 @@ up.displayParams = function(id, string) {
 			else param = [param, ''];
 			param = param.map(decodeURIComponent);
 			
-			dom.insertAdjacentHTML('beforeend', supplant(this.tpl, {key: escapeHtml(param[0]), value: escapeHtml(param[1])}));
+			html += supplant(this.tpl, {key: escapeHtml(param[0]), value: escapeHtml(param[1])});
 		}
 	}
+	dom.innerHTML = html;
 	up.insertLastLine(id, dom);
 };
 
