@@ -5,6 +5,14 @@ function supplant(s, o) {
 	});
 };
 
+function escapeHtml(s) {
+	return String(s).replace(/&/g,'&amp;')
+	                .replace(/"/g,'&quot;')
+	                .replace(/'/g,'&#39;')
+	                .replace(/</g,'&lt;')
+	                .replace(/>/g,'&gt;');
+};
+
 var up = {};
 up.tabs = {};
 up.tabId = null; //Id of the current tab
@@ -31,7 +39,7 @@ up.tpl = '<div data-dragitem="true" class="inputLine">' +
 
 up.setI18n = function(i18n) {
 	console.log('received translations');
-	up.tpl = supplant(up.tpl, i18n);
+	up.tpl = supplant(up.tpl, {'action.delete.tooltip': escapeHtml(i18n['action.delete.tooltip'])});
 	document.getElementsByTagName('button')[0].title = i18n['action.submit.tooltip'];
 };
 
@@ -184,7 +192,7 @@ up.displayParams = function(id, string) {
 			else param = [param, ''];
 			param = param.map(decodeURIComponent);
 			
-			dom.insertAdjacentHTML('beforeend', supplant(this.tpl, {key: param[0], value: param[1]}));
+			dom.insertAdjacentHTML('beforeend', supplant(this.tpl, {key: escapeHtml(param[0]), value: escapeHtml(param[1])}));
 		}
 	}
 	up.insertLastLine(id, dom);
