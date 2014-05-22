@@ -6,33 +6,33 @@
 	</head>
 	<body contextmenu="contextMenu">
 		<menu type="context" id="contextMenu">
-			<menuitem label="Refresh (reset manual changes)" onclick="up.refresh()" icon="icon-refresh-16.png"></menuitem>
+			<menuitem data-l10n-id="menu.refresh" onclick="up.refresh()" icon="icon-refresh-16.png">Refresh (reset manual changes)</menuitem>
 			<menu>
-				<menuitem label="Post => Get" onclick="up.switchInputs(true, false)" icon="icon-up-16.png"></menuitem>
-				<menuitem label="Get => Post" onclick="up.switchInputs(false, true)" icon="icon-down-16.png"></menuitem>
-				<menuitem label="Get <=> Post" onclick="up.switchInputs(true, true)" icon="icon-up-down-16.png"></menuitem>
+				<menuitem data-l10n-id="menu.postToGet" onclick="up.switchInputs(true, false)" icon="icon-up-16.png">Post => Get</menuitem>
+				<menuitem data-l10n-id="menu.getToPost" onclick="up.switchInputs(false, true)" icon="icon-down-16.png">Get => Post</menuitem>
+				<menuitem data-l10n-id="menu.switchGetPost" onclick="up.switchInputs(true, true)" icon="icon-up-down-16.png">Get &lt;=> Post</menuitem>
 			</menu>
 		</menu>
 		
 		<form onsubmit="up.submit(event)" onkeydown="up.keypress(event)">
 			<div class="top">
-				<label>Url:</label>
+				<label data-l10n-id="url">Url:</label>
 				<input id="urlInput"/>
 				<div hidden>
-					<label class="referrerLabel">Referrer:</label>
+					<label class="referrerLabel" data-l10n-id="referrer">Referrer:</label>
 					<input id="referrerInput"/>
 				</div>
 			</div>
 			<div class="params">
-				<label>Get:</label>
+				<label data-l10n-id="get">Get:</label>
 				<div id="getInputs" oninput="up.checkLastLine('getInputs')"></div>
 			</div>
 			<div class="params">
-				<label>Post:</label>
+				<label data-l10n-id="post">Post:</label>
 				<div id="postInputs" oninput="up.checkLastLine('postInputs')"></div>
 			</div>
 			<div class="buttonBar">
-				<button onclick="up.submit(event)" title="Use control key to submit in a new tab">Submit</button>
+				<button onclick="up.submit(event)" data-l10n-id="action.submit" title="Use control key to submit in a new tab">Submit</button>
 			</div>
 		</form>
 	</body>
