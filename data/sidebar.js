@@ -14,6 +14,7 @@ function escapeHtml(s) {
 };
 
 var up = {};
+var us = {};
 up.tabs = {};
 up.tabId = null; //Id of the current tab
 
@@ -26,7 +27,7 @@ up.init = function() {
 	}
 	document.addEventListener('DOMContentLoaded', function(){
 		if (!window.addon) up.onUrl();
-		up.drag.init();
+		us.drag.init();
 	});
 };
 
@@ -275,89 +276,6 @@ up.deleteLine = function(e) {
 		
 		line.parentElement.removeChild(line);
 		up.checkLastLine(list.id, true);
-	}
-};
-
-up.drag = {};
-up.drag.init = function() {
-	this.attachEvents('getInputs');
-	this.attachEvents('postInputs');
-};
-up.drag.attachEvents = function(id) {
-	var dom = document.getElementById(id);
-	dom.addEventListener('dragstart', this.onDragStart.bind(this), false);
-	dom.addEventListener('dragover', this.onDrag.bind(this), false);
-	dom.addEventListener('dragenter', this.onDrag.bind(this), false);
-	dom.addEventListener('drop', this.onDragDrop.bind(this), false);
-	dom.addEventListener('dragend', this.onDragEnd.bind(this), false);
-};
-
-up.drag.onDragStart = function(e) {
-	var dt = e.dataTransfer;
-	dt.effectAllowed = 'move';
-	dt.setData('url-shooter-param', ' ');
-	
-	up.drag.dragging = {
-		item: e.target.parentElement
-	};
-	
-	dt.setDragImage(up.drag.dragging.item, 3, 7);
-};
-
-up.drag.getPlaceHolder = function() {
-	if (!up.drag.placeholder) {
-		up.drag.placeholder = document.createElement('div');
-		up.drag.placeholder.className = 'drag-placeholder';
-	}
-	return up.drag.placeholder;
-};
-
-up.drag.onDrag = function(e) {
-	e.preventDefault();
-	e.dataTransfer.dropEffect = 'move';
-
-	if (e.target.getAttribute('data-dragitem') || e.target.parentElement.getAttribute('data-dragitem')) {
-		var target = e.target.getAttribute('data-dragitem') ? e.target : e.target.parentElement;
-		var parent = target.parentElement;
-		var placeholder = up.drag.getPlaceHolder();
-		
-		if (!(placeholder.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_PRECEDING)) {
-			target = target.nextSibling;
-		}
-		parent.insertBefore(placeholder, target);
-		
-		if (!up.drag.dragging.removed) {
-			// Cannot remove element due to https://bugzilla.mozilla.org/show_bug.cgi?id=460801
-			up.drag.dragging.item.style.display = 'none';
-			up.drag.dragging.removed = true;
-		}
-	} else if (e.target !== up.drag.placeholder) {
-		// The target is the list itself, check if we need to move the placeholder to the other list
-		var placeholder = up.drag.getPlaceHolder();
-		if (placeholder.parentElement !== e.target) {
-			e.target.appendChild(placeholder);
-		}
-	}
-};
-
-up.drag.onDragDrop = function(e) {
-	e.stopPropagation();
-	
-	var list = up.drag.placeholder.parentElement;
-	list.insertBefore(up.drag.dragging.item, up.drag.placeholder);
-	list.removeChild(up.drag.placeholder);
-	
-	up.checkLastLine('getInputs', true);
-	up.checkLastLine('postInputs', true);
-};
-
-up.drag.onDragEnd = function(e) {
-	up.drag.dragging.item.style.display = '';
-	delete up.drag.dragging;
-	
-	if (up.drag.placeholder) {
-		var parent = up.drag.placeholder.parentElement;
-		if (parent) parent.removeChild(up.drag.placeholder);
 	}
 };
 
