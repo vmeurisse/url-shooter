@@ -23,7 +23,7 @@ up.init = function() {
 		addon.port.on('url', up.onUrl.bind(up));
 		addon.port.on('close', up.onClose.bind(up));
 		addon.port.on('i18n', up.setI18n.bind(up));
-		addon.port.emit("ping");
+		addon.port.emit('ping');
 	}
 	document.addEventListener('DOMContentLoaded', function(){
 		if (!window.addon) up.onUrl();
