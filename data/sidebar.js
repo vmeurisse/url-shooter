@@ -45,7 +45,6 @@ up.getLine = function(key, value) {
 };
 
 up.setI18n = function(i18n) {
-	console.log('received translations');
 	up.i18n = i18n;
 };
 
@@ -69,35 +68,36 @@ up.normaliseUrl = function(url) {
 };
 
 up.onClose = function(tabId) {
-	console.log('Tab closed. Was active: ' + (up.tabId === tabId));
-	if (up.tabId === tabId) delete up.tabId;
+	if (up.tabId === tabId) {
+		// closes tab is the active one. Clean reference
+		delete up.tabId;
+	}
 	delete up.tabs[tabId];
 };
 
 up.onUrl = function(url, tabId) {
 	url = up.normaliseUrl(url);
 	
-	console.log('receiving url for tab <' + tabId + '>: ' + url.base);
 	if (tabId === up.tabId) {
 		if (up.compareUrls(up.tabs[tabId].url, url)) {
-			console.log('Url unchanged. no action');
+			// Url unchanged. no action
 			return;
 		}
+		// Current tab Url changed
 		up.tabs[tabId].url = url;
-		console.log('Current tab Url changed. Refreshing UI.');
 	} else {
 		if (up.tabId) {
-			console.log('Tab changed. Saving state.');
+			// Tab changed. Saving state
 			up.tabs[up.tabId].state = up.readUrl();
 		}
 		up.tabId = tabId;
 		var tabData = up.tabs[tabId] || {};
 		up.tabs[tabId] = tabData;
 		if (tabData.url && up.compareUrls(tabData.url, url)) {
-			console.log('Previous tab with url unchanged. Displaying previous state');
+			// Previous tab with url unchanged. Displaying previous state
 			url = tabData.state;
 		} else {
-			console.log('New tab or changed url');
+			//New tab or changed url
 			tabData.url = url;
 		}
 		
@@ -201,7 +201,7 @@ up.displayParams = function(id, string) {
 		}
 	}
 	var dom = document.getElementById(id);
-	dom.innerHTML = '';
+	dom.textContent = '';
 	dom.appendChild(frag);
 	up.insertLastLine(id, dom);
 };

@@ -154,7 +154,6 @@ function getUrl() {
  * @param {string} [options.referrer]
  */
 function loadUrl(options) {
-	console.log('loading URL:');
 	var { Cc, Ci } = require('chrome');
 	
 	var uri = Cc['@mozilla.org/network/standard-url;1'].createInstance(Ci.nsIStandardURL);
@@ -164,7 +163,6 @@ function loadUrl(options) {
 	
 	var postDataStream = null;
 	if (options.postData) {
-		console.log('  - with post data');
 		var postDataHeaders = 'Content-Type: application/x-www-form-urlencoded\r\nContent-Length: ' + options.postData.length + '\r\n\r\n';
 		postDataStream = Cc['@mozilla.org/io/string-input-stream;1'].createInstance(Ci.nsIStringInputStream);
 		postDataStream.setData(postDataHeaders + options.postData, -1);
@@ -172,12 +170,11 @@ function loadUrl(options) {
 	
 	var referringUri = null;
 	if (options.referrer) {
-		console.log('  - with a referrer');
 		referringUri = Cc['@mozilla.org/network/simple-uri;1'].createInstance(Ci.nsIURI);
 		try {
 			referringUri.spec = options.referrer;
 		} catch (e) {
-			console.error('invalid referrer <' + options.referrer + '>');
+			// could not set referrer
 		}
 	}
 	
@@ -186,11 +183,9 @@ function loadUrl(options) {
 	var tabBrowser = browserWindow.getBrowser();
 	
 	if (options.newTab) {
-		console.log('  - in a new tab');
 		tabBrowser.selectedTab = tabBrowser.addTab();
 	}
         
 	var webNavigation = tabBrowser.selectedBrowser.webNavigation;
 	webNavigation.loadURI(uri.spec, webNavigation.LOAD_FLAGS_BYPASS_CACHE | webNavigation.LOAD_FLAGS_IS_LINK, referringUri, postDataStream, null);
-	console.log('loading URL [done]');
 };
