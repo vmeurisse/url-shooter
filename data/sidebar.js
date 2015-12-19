@@ -1,20 +1,6 @@
-function supplant(s, o) {
-	return s.replace(/{([^{}]*)}/g, function (a, b) {
-		var r = o[b];
-		return r != null ? r : a;
-	});
-};
-
-function escapeHtml(s) {
-	return String(s).replace(/&/g,'&amp;')
-	                .replace(/"/g,'&quot;')
-	                .replace(/'/g,'&#39;')
-	                .replace(/</g,'&lt;')
-	                .replace(/>/g,'&gt;');
-};
-
 var up = {};
 var us = {};
+up.i18n = {};
 up.tabs = {};
 up.tabId = null; //Id of the current tab
 
@@ -30,16 +16,37 @@ up.init = function() {
 	});
 };
 
-up.tpl = '<div data-dragitem="true" class="inputLine">' +
-	'<div draggable="true" class="handle"></div>' +
-	'<input value="{key}"/>' +
-	'<input value="{value}"/>' +
-	'<div class="delete" onclick="up.deleteLine(event)" title="{action.delete.title}"></div>' +
-'</div>';
+up.getLine = function(key, value) {
+	// Can't use a template here due to addons.mozilla.org restrictions on innerHTML usage
+	var line = document.createElement('div');
+	line.className = 'inputLine';
+	line.setAttribute('data-dragitem', 'true');
+
+	var handle = document.createElement('div');
+	handle.className = 'handle';
+	handle.draggable = true;
+	line.appendChild(handle);
+
+	var inputKey = document.createElement('input');
+	inputKey.value = key;
+	line.appendChild(inputKey);
+
+	var inputValue = document.createElement('input');
+	inputValue.value = value;
+	line.appendChild(inputValue);
+
+	var del = document.createElement('div');
+	del.className = 'delete';
+	del.onclick=up.deleteLine;
+	del.title = up.i18n['action.delete.title'];
+	line.appendChild(del);
+
+	return line;
+};
 
 up.setI18n = function(i18n) {
 	console.log('received translations');
-	up.tpl = supplant(up.tpl, {'action.delete.title': escapeHtml(i18n['action.delete.title'])});
+	up.i18n = i18n;
 };
 
 up.compareUrls = function(u1, u2) {
@@ -156,7 +163,7 @@ up.checkLastLine = function(type, noCache) {
 up.insertLastLine = function(type, dom) {
 	if (!dom) dom = document.getElementById(type);
 	
-	dom.insertAdjacentHTML('beforeend', supplant(this.tpl, {key: '', value: ''}));
+	dom.appendChild(this.getLine('', ''));
 	delete this.previousInputLine[type];
 	delete this.lastInputLine[type];
 };
@@ -181,8 +188,7 @@ up.deleteLastLine = function(type, dom) {
 };
 
 up.displayParams = function(id, string) {
-	var dom = document.getElementById(id);
-	var html = '';
+	var frag = document.createDocumentFragment();
 	if (string) {
 		string = string.split('&');
 		for (var param of string) {
@@ -191,10 +197,12 @@ up.displayParams = function(id, string) {
 			else param = [param, ''];
 			param = param.map(decodeURIComponent);
 			
-			html += supplant(this.tpl, {key: escapeHtml(param[0]), value: escapeHtml(param[1])});
+			frag.appendChild(up.getLine(param[0], param[1]));
 		}
 	}
-	dom.innerHTML = html;
+	var dom = document.getElementById(id);
+	dom.innerHTML = '';
+	dom.appendChild(frag);
 	up.insertLastLine(id, dom);
 };
 
