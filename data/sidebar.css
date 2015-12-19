@@ -21,6 +21,9 @@ input {
 	height: 20px;
 	box-sizing: border-box;
 }
+input:focus {
+	background-color: white;
+}
 
 .top {
 	padding: 7px 7px 0 10px;
