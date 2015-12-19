@@ -1,0 +1,7 @@
+.*
+*.xpi
+
+doc/*
+README.md
+
+snapshot*.png
