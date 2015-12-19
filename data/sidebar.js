@@ -23,7 +23,6 @@ up.init = function() {
 		addon.port.on('url', up.onUrl.bind(up));
 		addon.port.on('close', up.onClose.bind(up));
 		addon.port.on('i18n', up.setI18n.bind(up));
-		addon.port.emit('ping');
 	}
 	document.addEventListener('DOMContentLoaded', function(){
 		if (!window.addon) up.onUrl();
@@ -35,13 +34,12 @@ up.tpl = '<div data-dragitem="true" class="inputLine">' +
 	'<div draggable="true" class="handle"></div>' +
 	'<input value="{key}"/>' +
 	'<input value="{value}"/>' +
-	'<div class="delete" onclick="up.deleteLine(event)" title="{action.delete.tooltip}"></div>' +
+	'<div class="delete" onclick="up.deleteLine(event)" title="{action.delete.title}"></div>' +
 '</div>';
 
 up.setI18n = function(i18n) {
 	console.log('received translations');
-	up.tpl = supplant(up.tpl, {'action.delete.tooltip': escapeHtml(i18n['action.delete.tooltip'])});
-	document.getElementsByTagName('button')[0].title = i18n['action.submit.tooltip'];
+	up.tpl = supplant(up.tpl, {'action.delete.title': escapeHtml(i18n['action.delete.title'])});
 };
 
 up.compareUrls = function(u1, u2) {

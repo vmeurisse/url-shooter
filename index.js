@@ -28,20 +28,19 @@ var sidebar = require('sdk/ui/sidebar').Sidebar({
 	id: 'url-shooter-sidebar',
 	title: _('title'),
 	url: require('sdk/self').data.url('sidebar.html'),
-	onAttach: function (worker) {
+	onReady: function(worker) {
+		var port = worker.port;
+		port.emit('i18n', {
+			'action.delete.title': _('action.delete.title'),
+		});
+		port.emit('url', getUrl(), tabs.activeTab.id);
+	},
+	onAttach: function(worker) {
 		var port = worker.port;
 		var window = windows.activeWindow;
 		var tabs = window.tabs;
 		
 		sidebars.set(window, {});
-		
-		port.on('ping', function() {
-			port.emit('i18n', {
-				'action.delete.tooltip': _('action.delete.tooltip'),
-				'action.submit.tooltip': _('action.submit.tooltip')
-			});
-			port.emit('url', getUrl(), tabs.activeTab.id);
-		});
 		
 		port.on('load', function(url) {
 			loadUrl(url);
